@@ -3,4 +3,32 @@
 while read line
 do
   echo "$line"
+  cmd = ($line)
+  action = ${cmd[0]}
+  fruitfs = ${cmd[1]}
+  echo "action: $action"
+  echo "fruitfs: $fruitfs"
+  case $action in
+    CREATE)
+    fs[$fruitfs] = $fruitfs
+    echo "> CREATE $fruitfs"
+    ;;
+    DELETE)
+        fs[$fruitfs] = 0
+    echo "> DELETE $fruitfs"
+    ;;
+    MOVE)
+    echo "> CREATE $fruitfs"
+    ;;
+    LIST)
+    echo "> LIST"
+    for i in "${!fs[@]}"
+    do
+      if ${fs[$i]} != 0
+        echo "> $i"
+      fi
+    done 
+    ;;
+    *)
+  esac
 done < "${1:-/dev/stdin}"
